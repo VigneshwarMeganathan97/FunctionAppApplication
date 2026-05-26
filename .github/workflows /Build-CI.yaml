@@ -13,23 +13,25 @@ jobs:
     environment: OIDC
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Current Repository
         uses: actions/checkout@v4
 
       - name: Checkout Bicep Template Repo
         uses: actions/checkout@v4
         with:
-          repository: BicepTempate
+          repository: VigneshwarMeganathan97/BicepTempate
           ref: main
           path: bicep-template
           token: ${{ secrets.PAT_TOKEN }}
 
-      - name: Verify files
+      - name: Verify Files
+        shell: pwsh
         run: |
-          echo "Listing all files:"
-          ls -R bicep-template
+          Write-Host "Listing all files:"
+          Get-ChildItem ./bicep-template -Recurse
 
-      - name: Show workspace location
+      - name: Show Workspace Location
+        shell: pwsh
         run: |
           Write-Host "Workspace path: $env:GITHUB_WORKSPACE"
           Get-Location
@@ -38,4 +40,4 @@ jobs:
       - name: Run PowerShell Script
         shell: pwsh
         run: |
-          ./bicep-template/Bicep_Template/Sample.ps1
+          pwsh -ExecutionPolicy Bypass -File "./bicep-template/Bicep_Template/Sample.ps1"
